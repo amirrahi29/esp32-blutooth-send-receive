@@ -1,0 +1,30 @@
+#include "BluetoothA2DPSink.h"
+#include "BluetoothSerial.h"
+
+BluetoothA2DPSink a2dp_sink;
+BluetoothSerial SerialBT;
+String cmd;
+
+void setup() {
+  Serial.begin(115200);
+  SerialBT.begin("MyESP32"); // Set the Bluetooth device name to "MyESP32"
+  pinMode(2, OUTPUT);
+}
+
+void loop() {
+  if (SerialBT.available()) {
+    cmd = SerialBT.readStringUntil('\n'); // Read the entire string until a newline character
+
+    if (cmd == "lights on") {
+      digitalWrite(2, HIGH);
+      Serial.println("on");
+    }
+
+    if (cmd == "lights off") {
+      digitalWrite(2, LOW);
+      Serial.println("off");
+    }
+  }
+
+  delay(20);
+}
